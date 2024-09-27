@@ -1,13 +1,14 @@
 package package1;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-import dbpackage.User;
 
 
 
@@ -60,9 +61,7 @@ public class Rent_Manager {
 		int bookCount = 0;
 	}
 	
-	public void inputUser(User user) {
-		
-	}
+	
 	
 	public void releaseDB() {
 		try {
@@ -72,8 +71,23 @@ public class Rent_Manager {
 			e.printStackTrace();
 		}
 	}
- public void insertRent(String bookId, String userId) {
+	
+//	"20240201"
+//	""
+	
+ public void insertRent(String bookId, String userId, String startDate, String endDate) {
 	 
+	
+	 String sql = "insert into rent values(null, ?, ?, ?, ?)";
+	 
+	 
+	 PreparedStatement pstmt = conn.prepareStatement(sql);
+	 
+	 pstmt.setString(1, bookId);
+	 pstmt.setString(2, bookId);
+	 
+	 pstmt.setDate(3, Date.valueOf(startDate));
+	// pstmt.executeUpdate();  // DB 에다 호출
 	 
  }
 
