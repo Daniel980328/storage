@@ -67,7 +67,7 @@ public class Rent_Manager {
                 String id = rs.getString("id");
                 long categoryId = rs.getLong("category_id");
                 String title = rs.getString("title");
-                boolean rented = rs.getBoolean("rented");
+                boolean rented = rs.getBoolean("rented"); // 이건 어떻게 해야 되는지 잘 모르겠어요 
                 String writer = rs.getString("writer");
                 String publisher = rs.getString("publisher");
                 String description = rs.getString("description");
@@ -84,7 +84,7 @@ public class Rent_Manager {
         return bookList;
     }
 	
-""
+
 	
  public void insertRent(String bookId, String userId, String startDate, String endDate) {
 	  String sql = "insert into rent values(null, ?, ?, ?, ?)";
@@ -92,7 +92,7 @@ public class Rent_Manager {
 	  try {	
 	 PreparedStatement pstmt = conn.prepareStatement(sql);
 	 pstmt.setString(1, bookId);
-	 pstmt.setString(2, bookId);
+	 pstmt.setString(2, userId);
 	 pstmt.setDate(3, Date.valueOf(startDate));
 	 pstmt.setDate(4, Date.valueOf(endDate)); // 번호가 오토인크리먼트일 경우 null 값으로 변경
 	 pstmt.executeUpdate();  // DB 에다 호출
@@ -102,12 +102,12 @@ public class Rent_Manager {
 		}
  }
 
-		public void releaseDB() {
-		try {
-			this.conn.close();
-			this.stmt.close();
-		}catch(SQLException e) {
-			e.printStackTrace();
+public void releaseDB() {
+	try {
+		this.conn.close();
+		this.stmt.close();
+	}catch(SQLException e) {
+		e.printStackTrace();
 		}
 	}
 	
