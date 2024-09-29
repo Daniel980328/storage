@@ -39,7 +39,7 @@ public class Rent_Manager {
 	}
 	
 	public int recordCount() {
-		String sql = "select count(*) as cnt from usertbl";
+		String sql = "select count(*) as cnt from book";
 		int reCount = 0;
 
 		try {
@@ -59,11 +59,50 @@ public class Rent_Manager {
 		int reCount = this.recordCount();
 		Book[] bookList = new Book[reCount];
 		int bookCount = 0;
-	}
+	String sql = "SELECT * FROM book";
+        try {
+            ResultSet rs = stmt.executeQuery(sql);
+            int bookCount = 0;
+            while (rs.next()) {
+                String id = rs.getString("id");
+                long categoryId = rs.getLong("category_id");
+                String title = rs.getString("title");
+                boolean rented = rs.getBoolean("rented");
+                String writer = rs.getString("writer");
+                String publisher = rs.getString("publisher");
+                String description = rs.getString("description");
+
+                // Book 객체 생성 후 배열에 추가
+                bookList[bookCount] = new Book(id, categoryId, title, rented, writer, publisher, description);
+                bookCount++;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return bookList;
+    }
 	
+""
 	
-	
-	public void releaseDB() {
+ public void insertRent(String bookId, String userId, String startDate, String endDate) {
+	  String sql = "insert into rent values(null, ?, ?, ?, ?)";
+	 
+	  try {	
+	 PreparedStatement pstmt = conn.prepareStatement(sql);
+	 pstmt.setString(1, bookId);
+	 pstmt.setString(2, bookId);
+	 pstmt.setDate(3, Date.valueOf(startDate));
+	 pstmt.setDate(4, Date.valueOf(endDate)); // 번호가 오토인크리먼트일 경우 null 값으로 변경
+	 pstmt.executeUpdate();  // DB 에다 호출
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+ }
+
+		public void releaseDB() {
 		try {
 			this.conn.close();
 			this.stmt.close();
@@ -73,23 +112,5 @@ public class Rent_Manager {
 	}
 	
 //	"20240201"
-//	""
-	
- public void insertRent(String bookId, String userId, String startDate, String endDate) {
-	 
-	
-	 String sql = "insert into rent values(null, ?, ?, ?, ?)";
-	 
-	 
-	 PreparedStatement pstmt = conn.prepareStatement(sql);
-	 
-	 pstmt.setString(1, bookId);
-	 pstmt.setString(2, bookId);
-	 
-	 pstmt.setDate(3, Date.valueOf(startDate));
-	// pstmt.executeUpdate();  // DB 에다 호출
-	 
- }
-
-}
+//	
 
